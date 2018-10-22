@@ -22,8 +22,9 @@ RUN cd /opt/gitlab/embedded/bin/ && ./gem install -i /opt/gitlab/embedded/servic
 	&& sed -e 's/mysql/postgres/' /opt/gitlab/embedded/service/gitlab-rails/.bundle/config.old > /opt/gitlab/embedded/service/gitlab-rails/.bundle/config \
 	&& cd /opt/gitlab/embedded/service/gitlab-rails && /opt/gitlab/embedded/bin/bundle install
 
+COPY assets /assets/
+RUN chmod +x /assets/*.sh
+
 EXPOSE 80 22
 
-VOLUME ["/etc/gitlab", "/var/log/gitlab", "/var/opt/gitlab"]
-
-CMD /assets/wrapper
+CMD /assets/foilen_wrapper.sh
