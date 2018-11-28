@@ -1,5 +1,5 @@
 # https://hub.docker.com/r/gitlab/gitlab-ce/tags/
-FROM gitlab/gitlab-ce:10.2.2-ce.0
+FROM gitlab/gitlab-ce:11.4.5-ce.0
 
 RUN export TERM=dumb ; apt-get update && apt-get install -y \
       curl \
@@ -17,10 +17,17 @@ RUN export TERM=dumb ; apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Configure to use MySQL
-RUN cd /opt/gitlab/embedded/bin/ && ./gem install -i /opt/gitlab/embedded/service/gem/ruby/2.1.0 mysql2 -v0.3.17 \
-	&& mv /opt/gitlab/embedded/service/gitlab-rails/.bundle/config /opt/gitlab/embedded/service/gitlab-rails/.bundle/config.old \
-	&& sed -e 's/mysql/postgres/' /opt/gitlab/embedded/service/gitlab-rails/.bundle/config.old > /opt/gitlab/embedded/service/gitlab-rails/.bundle/config \
-	&& cd /opt/gitlab/embedded/service/gitlab-rails && /opt/gitlab/embedded/bin/bundle install
+RUN cd /tmp && \
+  wget https://cache.ruby-lang.org/pub/ruby/2.4/ruby-2.4.4.tar.gz && \
+  tar -zxvf ruby-2.4.4.tar.gz && \
+  cd ruby-2.4.4/ && \
+  ./configure && make && \
+  mkdir -p /opt/gitlab/embedded/lib/ruby/include/ && cp -r include/* /opt/gitlab/embedded/lib/ruby/include/ && \
+  mkdir /include && cp -r .ext/include/x86_64-linux /include && \
+  \
+  cd /opt/gitlab/embedded/service/gitlab-rails && \
+  bundle install --with mysql && \
+  rm -rf /tmp/ruby-2.4.4.tar.gz /tmp/ruby-2.4.4/
 
 COPY assets /assets/
 RUN chmod +x /assets/*.sh
