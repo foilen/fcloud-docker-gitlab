@@ -10,6 +10,7 @@ RUN export TERM=dumb ; apt-get update && apt-get install -y \
       libmysqlclient-dev \
       make \
       mysql-client \
+      pgloader postgresql-client \
       supervisor \
       unzip \
       vim \
