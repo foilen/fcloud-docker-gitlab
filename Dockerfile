@@ -1,12 +1,11 @@
 # https://hub.docker.com/r/gitlab/gitlab-ce/tags/
-FROM gitlab/gitlab-ce:11.11.7-ce.0
+FROM gitlab/gitlab-ce:12.0.4-ce.0
 
 RUN export TERM=dumb ; apt-get update && apt-get install -y \
       curl \
       haproxy \
       iproute2 \
       less \
-      pgloader postgresql-client \
       supervisor \
       unzip \
       vim \
