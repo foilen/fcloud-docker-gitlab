@@ -1,5 +1,5 @@
 # https://hub.docker.com/r/gitlab/gitlab-ce/tags/
-FROM gitlab/gitlab-ce:12.2.6-ce.0
+FROM gitlab/gitlab-ce:12.2.7-ce.0
 
 RUN export TERM=dumb ; apt-get update && apt-get install -y \
       curl \
